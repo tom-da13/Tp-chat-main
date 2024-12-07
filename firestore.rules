@@ -1,0 +1,30 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Règles pour la collection "chats" (chat public)
+    match /chats/{chatId} {
+      // Autorise la lecture, la création et la suppression si l'utilisateur est authentifié
+      allow read, create, delete: if request.auth != null;
+    }
+
+    // Règles pour les sous-collections "messages" dans "chats" (chat public)
+    match /chats/{chatId}/messages/{messageId} {
+      // Autorise la lecture, la création et la suppression si l'utilisateur est authentifié
+      allow read, create, delete: if request.auth != null;
+    }
+
+    // Règles pour la collection "privateChats" (chat privé)
+    match /privateChats/{chatId} {
+      // Autorise la lecture et l'écriture si l'utilisateur est authentifié et qu'il est membre du chat
+      allow read, write: if request.auth != null &&
+                         request.auth.uid in resource.data.members;
+    }
+
+    // Règles pour les sous-collections "messages" dans "privateChats"
+    match /privateChats/{chatId}/messages/{messageId} {
+      // Autorise la lecture, la création et la suppression si l'utilisateur est authentifié et qu'il est membre du chat
+      allow read, create, delete: if request.auth != null &&
+                                  request.auth.uid in resource.data.members;
+    }
+  }
+}
