@@ -1,0 +1,26 @@
+nav {
+  background-color: #007bff;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+nav li {
+  margin: 0 10px;
+}
+
+nav a, nav button {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border: none;
+  background: none;
+}
+
+nav button {
+  cursor: pointer;
+}
